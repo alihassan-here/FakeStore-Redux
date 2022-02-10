@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+//REDUX
 import { useDispatch, useSelector } from "react-redux";
-import { selectedProduct } from "../redux/actions/productActions";
+import { selectedProduct, removeSelectedProduct } from "../redux/actions/productActions";
+
 const ProductDetail = () => {
 
     const product = useSelector(state => state.product);
@@ -10,7 +12,6 @@ const ProductDetail = () => {
 
     const { productId } = useParams();
     const dispatch = useDispatch();
-    console.log(product);
 
     const fetchProductDetail = async () => {
         const response = await axios.get(`https://fakestoreapi.com/products/${productId}`).catch(err => {
@@ -22,6 +23,9 @@ const ProductDetail = () => {
         if (productId && productId !== '') {
             fetchProductDetail();
         }
+        return () => {
+            dispatch(removeSelectedProduct());
+        }
     }, [productId])
 
     return (
@@ -29,12 +33,12 @@ const ProductDetail = () => {
             {Object.keys(product).length === 0 ? (
                 <div>...Loading</div>
             ) : (
-                <div className="ui placeholder segment">
+                <div className="ui segment">
                     <div className="ui two column stackable center aligned grid">
                         <div className="ui vertical divider">AND</div>
                         <div className="middle aligned row">
                             <div className="column lp">
-                                <img className="ui fluid image" src={image} />
+                                <img className="ui fluid image" src={image} alt={title} />
                             </div>
                             <div className="column rp">
                                 <h1>{title}</h1>

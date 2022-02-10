@@ -25,7 +25,7 @@ const ProductListing = () => {
 
     return (
         <div className="container">
-            <div className="row">
+            <div className="row" style={{ marginTop: '100px' }}>
                 <ProductComponent />
             </div>
         </div>
