@@ -1,9 +1,12 @@
 import { useEffect } from "react";
-import axios from "axios";
+// import axios from "axios";
 import { useParams } from "react-router-dom";
 //REDUX
 import { useDispatch, useSelector } from "react-redux";
-import { selectedProduct, removeSelectedProduct } from "../redux/actions/productActions";
+import { selectedProduct, fetchProduct, removeSelectedProduct } from "../redux/actions/productActions";
+import { Oval, Plane } from 'react-loader-spinner';
+import '../../node_modules/react-loader-spinner/dist/loader/css/Plane.css';
+
 
 const ProductDetail = () => {
 
@@ -13,15 +16,16 @@ const ProductDetail = () => {
     const { productId } = useParams();
     const dispatch = useDispatch();
 
-    const fetchProductDetail = async () => {
-        const response = await axios.get(`https://fakestoreapi.com/products/${productId}`).catch(err => {
-            console.log(err);
-        });
-        dispatch(selectedProduct(response.data));
-    }
+    // const fetchProductDetail = async () => {
+    //     const response = await axios.get(`https://fakestoreapi.com/products/${productId}`).catch(err => {
+    //         console.log(err);
+    //     });
+    //     dispatch(selectedProduct(response.data));
+    // }
     useEffect(() => {
         if (productId && productId !== '') {
-            fetchProductDetail();
+            dispatch(fetchProduct(productId));
+            // fetchProductDetail();
         }
         return () => {
             dispatch(removeSelectedProduct());
@@ -31,7 +35,17 @@ const ProductDetail = () => {
     return (
         <div className="ui grid container">
             {Object.keys(product).length === 0 ? (
-                <div>...Loading</div>
+                <div style={{ marginTop: '250px', marginLeft: '500px' }}>
+                    {/* <Oval
+                        ariaLabel="loading-indicator"
+                        height={100}
+                        width={100}
+                        strokeWidth={5}
+                        color="red"
+                        secondaryColor="yellow"
+                    /> */}
+                    <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                </div>
             ) : (
                 <div className="ui segment">
                     <div className="ui two column stackable center aligned grid">
